@@ -5,8 +5,8 @@ import tkinter as tk
 import sys
 import pygame
 
-blue_sensor_pin = 23
-red_sensor_pin = 24
+blue_sensor_pin = 24
+red_sensor_pin = 23
 
 blue_score = 0
 red_score = 0
