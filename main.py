@@ -12,8 +12,10 @@ blue_score = 0
 red_score = 0
 
 def start_game():
-    update_score('blue', 0)
-    update_score('red', 0)
+    global blue_score
+    global red_score
+    blue_score = 0
+    red_score = 0
     play_sound('sounds/start_game.mp3')
 
 def reset_game_if_needed():
