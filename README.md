@@ -102,7 +102,7 @@ Problems using Python on macOS?
 See https://opensource.com/article/19/5/python-3-default-mac
 I used Python 3.9.10
 
-1. Install GPIO emulator
+### 1. Install GPIO emulator
 
 `pip install git+https://github.com/nosix/raspberry-gpio-emulator`
 
@@ -110,7 +110,7 @@ or
 
 `pyenv exec pip install git+https://github.com/nosix/raspberry-gpio-emulator`
 
-2. Install pygame
+### 2. Install pygame
 
 `pip install pygame`
 
