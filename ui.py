@@ -5,12 +5,14 @@ import pygame
 pygame.init()
 
 # Hide the cursor
-pygame.mouse.set_visible(False)
+# pygame.mouse.set_visible(False)
 
 # Stel de schermresolutie in
 screen_width = 1920
 screen_height = 1080
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
+# @todo enable fullscreen on production
+#screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Stel de scores in
 team_blue_score = int(sys.argv[1])
