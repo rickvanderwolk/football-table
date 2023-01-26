@@ -52,10 +52,10 @@ def update_score(team, score):
     print(team, "team score:", score)
     reset_game_if_needed()
 
-def blue_callback(channel):
+def blue_sensor_callback(channel):
     update_score("blue", blue_score+1)
 
-def red_callback(channel):
+def red_sensor_callback(channel):
     update_score("red", red_score+1)
 
 def update_ui():
@@ -68,8 +68,8 @@ def update_ui():
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(blue_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(red_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_callback, bouncetime=300)
-GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_callback, bouncetime=300)
+GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_sensor_callback, bouncetime=300)
+GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_sensor_callback, bouncetime=300)
 
 start_game()
 
