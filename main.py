@@ -9,6 +9,24 @@ red_sensor_pin = 24
 blue_score = 0
 red_score = 0
 
+def start_game():
+    global blue_score
+    global red_score
+    blue_score = 0
+    red_score = 0
+
+def reset_game_if_needed():
+    global blue_score
+    global red_score
+    if blue_score == 10 or red_score == 10:
+        if (blue_score == 10 and red_score == 0) or (red_score == 10 and blue_score == 0):
+           print("game over")
+           time.sleep(15)
+        else:
+           print("game over, crawl!")
+           time.sleep(15)
+        start_game()
+
 def update_score(team, score):
     global blue_score
     global red_score
@@ -16,6 +34,7 @@ def update_score(team, score):
         blue_score = score
     elif team == "red":
         red_score = score
+    reset_game_if_needed()
 
 def blue_callback(channel):
     update_score("blue", blue_score+1)
@@ -47,3 +66,5 @@ right_frame.place(x=200, y=0, width = 200, height =200)
 ui_thread = threading.Thread(target=update_ui)
 ui_thread.start()
 ui.mainloop()
+
+start_game()
