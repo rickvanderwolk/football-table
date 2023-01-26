@@ -14,6 +14,7 @@
 - [Reset game](#reset-game)
 - [Troubleshooting](#troubleshooting)
 - [Setup a new Raspberry Pi](#setup-a-new-raspberry-pi)
+- [Development](#development)
 
 <a name="start-game"></a>
 ## Start game
@@ -91,3 +92,28 @@ Add the following:
 Deploy files to Pi with scp. For example:
 
 `scp -r ./voetbaltafel voetbaltafel@192.168.1.103:~/Documents`
+
+<a name="start-development"></a>
+## Development
+
+Currently aimed at development on macOS. 
+
+Problems using Python on macOS?
+See https://opensource.com/article/19/5/python-3-default-mac
+I used Python 3.9.10
+
+1. Install GPIO emulator
+
+`pip install git+https://github.com/nosix/raspberry-gpio-emulator`
+
+or
+
+`pyenv exec pip install git+https://github.com/nosix/raspberry-gpio-emulator`
+
+2. Install pygame
+
+`pip install pygame`
+
+or
+
+`pyenv exec pip install pygame`
