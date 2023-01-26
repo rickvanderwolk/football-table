@@ -2,6 +2,8 @@ import RPi.GPIO as GPIO
 import threading
 import time
 import tkinter as tk
+import sys
+import pygame
 
 blue_sensor_pin = 23
 red_sensor_pin = 24
@@ -27,6 +29,12 @@ def reset_game_if_needed():
            time.sleep(15)
         start_game()
 
+def play_sound(sound):
+    sound = str(sound)
+    pygame.mixer.init()
+    pygame.mixer.music.load(sound)
+    pygame.mixer.music.play()
+
 def update_score(team, score):
     global blue_score
     global red_score
@@ -35,6 +43,7 @@ def update_score(team, score):
     elif team == "red":
         red_score = score
     reset_game_if_needed()
+    play_sound('sounds/goal.mp3')
 
 def blue_callback(channel):
     update_score("blue", blue_score+1)
