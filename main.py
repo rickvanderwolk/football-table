@@ -12,10 +12,8 @@ blue_score = 0
 red_score = 0
 
 def start_game():
-    global blue_score
-    global red_score
-    blue_score = 0
-    red_score = 0
+    update_score('blue', 0)
+    update_score('red', 0)
     play_sound('sounds/start_game.mp3')
 
 def reset_game_if_needed():
@@ -42,19 +40,21 @@ def update_score(team, score):
     global blue_score
     global red_score
     if team == "blue":
+        if (blue_score != score):
+            play_sound('sounds/goal.mp3')
         blue_score = score
     elif team == "red":
+        if (blue_score != score):
+            play_sound('sounds/goal.mp3')
         red_score = score
+    print(team, "team score:", score)
     reset_game_if_needed()
-    play_sound('sounds/goal.mp3')
 
 def blue_callback(channel):
     update_score("blue", blue_score+1)
-    print("Blue team score:", blue_score)
 
 def red_callback(channel):
     update_score("red", red_score+1)
-    print("Red team score:", red_score)
 
 def update_ui():
     label = tk.Label(ui, text="Red: {}  Blue: {}".format(red_score, blue_score), fg = "white")
