@@ -26,10 +26,10 @@ def red_callback(channel):
     print("Red team score:", red_score)
 
 def update_ui():
-    label = tk.Label(ui, text="Blue: {}  Red: {}".format(blue_score, red_score), fg = "white")
+    label = tk.Label(ui, text="Red: {}  Blue: {}".format(red_score, blue_score), fg = "white")
     label.pack()
     while True:
-        label.config(text="Blue: {}  Red: {}".format(blue_score, red_score))
+        label.config(text="Red: {}  Blue: {}".format(red_score, blue_score))
         time.sleep(0.1)
 
 GPIO.setmode(GPIO.BCM)
@@ -39,6 +39,11 @@ GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_callback, bou
 GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_callback, bouncetime=300)
 
 ui = tk.Tk()
+ui.geometry("400x200+0+0")
+left_frame = tk.Frame(ui, bg = "red", width=200, height=200)
+right_frame = tk.Frame(ui, bg = "blue", width=200, height=200)
+left_frame.place(x=0, y=0, width = 200, height =200)
+right_frame.place(x=200, y=0, width = 200, height =200)
 ui_thread = threading.Thread(target=update_ui)
 ui_thread.start()
 ui.mainloop()
