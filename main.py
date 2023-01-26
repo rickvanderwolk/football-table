@@ -16,16 +16,19 @@ def start_game():
     global red_score
     blue_score = 0
     red_score = 0
+    play_sound('sounds/start_game.mp3')
 
 def reset_game_if_needed():
     global blue_score
     global red_score
     if blue_score == 10 or red_score == 10:
         if (blue_score == 10 and red_score == 0) or (red_score == 10 and blue_score == 0):
-           print("game over")
-           time.sleep(15)
+           print("game over, crawl alarm!")
+           play_sound('sounds/crawl_alarm.mp3')
+           time.sleep(60)
         else:
-           print("game over, crawl!")
+           print("game over")
+           play_sound('sounds/game_over.mp3')
            time.sleep(15)
         start_game()
 
@@ -66,6 +69,8 @@ GPIO.setup(red_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_callback, bouncetime=300)
 GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_callback, bouncetime=300)
 
+start_game()
+
 ui = tk.Tk()
 ui.geometry("400x200+0+0")
 left_frame = tk.Frame(ui, bg = "red", width=200, height=200)
@@ -75,5 +80,3 @@ right_frame.place(x=200, y=0, width = 200, height =200)
 ui_thread = threading.Thread(target=update_ui)
 ui_thread.start()
 ui.mainloop()
-
-start_game()
