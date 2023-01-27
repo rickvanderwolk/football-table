@@ -60,9 +60,12 @@ def red_sensor_callback(channel):
 
 def update_ui():
     label = tk.Label(ui, text="Red: {}  Blue: {}".format(red_score, blue_score), fg = "white")
+
     label.pack()
     while True:
-        label.config(text="Red: {}  Blue: {}".format(red_score, blue_score))
+        label.config(font=("Arial", 172))
+        label.config(text="{} - {}".format(red_score, blue_score))
+        label.place(relx=0.5, rely=0.5, anchor="center")
         time.sleep(0.1)
 
 GPIO.setmode(GPIO.BCM)
@@ -74,11 +77,15 @@ GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_sensor_callback
 start_game()
 
 ui = tk.Tk()
-ui.geometry("400x200+0+0")
-left_frame = tk.Frame(ui, bg = "red", width=200, height=200)
-right_frame = tk.Frame(ui, bg = "blue", width=200, height=200)
-left_frame.place(x=0, y=0, width = 200, height =200)
-right_frame.place(x=200, y=0, width = 200, height =200)
+# ui.attributes("-fullscreen", True)
+screen_width = ui.winfo_screenwidth()
+screen_height = ui.winfo_screenheight()
+frame_width = screen_width / 2
+ui.geometry(f"{screen_width}x{screen_height}+0+0")
+left_frame = tk.Frame(ui, bg = "red", width=frame_width, height=screen_height)
+right_frame = tk.Frame(ui, bg = "blue", width=frame_width, height=screen_height)
+left_frame.place(x=0, y=0, width = frame_width, height = screen_height)
+right_frame.place(x=frame_width, y=0, width = frame_width, height = screen_height)
 ui_thread = threading.Thread(target=update_ui)
 ui_thread.start()
 ui.mainloop()
