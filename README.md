@@ -16,6 +16,7 @@
 - [Hardware](#hardware)
 - [Setup a new Raspberry Pi](#setup-a-new-raspberry-pi)
 - [Development](#development)
+- [Sound effects](#sound-effects)
 
 <a name="start-game"></a>
 ## Start game
@@ -132,3 +133,8 @@ or
 or
 
 `pyenv exec pip install pygame`
+
+<a name="sound-effects"></a>
+## Sound effects
+
+- Sound effects from [Pixabay](https://pixabay.com/sound-effects/)
