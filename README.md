@@ -89,6 +89,7 @@ Place micro SD card in Pi and complete setup wizard
 `sudo nano /etc/xdg/lxsession/LXDE-pi/autostart`
 
 Add the following:
+
 ```
 @xset s noblank
 @xset s off
@@ -137,4 +138,4 @@ or
 <a name="sound-effects"></a>
 ## Sound effects
 
-- Sound effects from [Pixabay](https://pixabay.com/sound-effects/)
+Sound effects from [Pixabay](https://pixabay.com/sound-effects/)
