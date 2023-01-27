@@ -50,6 +50,7 @@ Navigate to `System Options` > `Audio` > select headphone output (probably 0).
 <a name="hardware"></a>
 ## Hardware
 
+- [Football table](https://www.buffalo.nl/nl/buffalo-tafelvoetbaltafel-black-bandit-ii)
 - Raspberry Pi 3B+
 - Micro USB adapter
 - 2x [Beam break sensors](https://www.bitsandparts.nl/Infrarood-IR-Break-Beam-Onderbrekings-sensor-3mm-Adafruit-2167-p109702)
