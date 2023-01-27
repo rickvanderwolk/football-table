@@ -13,6 +13,7 @@
 - [Start game](#start-game)
 - [Reset game](#reset-game)
 - [Troubleshooting](#troubleshooting)
+- [Hardware](#hardware)
 - [Setup a new Raspberry Pi](#setup-a-new-raspberry-pi)
 - [Development](#development)
 
@@ -44,6 +45,20 @@ Navigate to `System Options` > `Audio` > select headphone output (probably 0).
 ### No UI
 
 `export DISPLAY=:0`
+
+<a name="hardware"></a>
+## Hardware
+
+- Raspberry Pi 3B+
+- Micro USB adapter
+- 2x [Beam break sensors](https://www.bitsandparts.nl/Infrarood-IR-Break-Beam-Onderbrekings-sensor-3mm-Adafruit-2167-p109702)
+- 2x breadboard
+- 2x [female female 3 pin cable (70cm)](https://opencircuit.nl/product/70cm-3pin-female-female-kabel)
+- a few jumper wires (male male)
+- PC speakers (3,5mm jack)
+- Monitor (HDMI)
+- HDMI cable
+- Extension cord (power)
 
 <a name="setup-a-new-raspberry-pi"></a>
 ## Setup a new Raspbery Pi
