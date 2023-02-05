@@ -87,7 +87,7 @@ GPIO.setup(red_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 start_game()
 
 ui = tk.Tk()
-# ui.attributes('-fullscreen', True)
+ui.attributes('-fullscreen', True)
 screen_width = ui.winfo_screenwidth()
 screen_height = ui.winfo_screenheight()
 frame_width = screen_width / 2
