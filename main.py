@@ -14,14 +14,22 @@ red_score = 0
 def start_game():
     global blue_score
     global red_score
+    global blue_sensor_pin
+    global red_sensor_pin
     blue_score = 0
     red_score = 0
+    GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_sensor_callback, bouncetime=300)
+    GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_sensor_callback, bouncetime=300)
     play_sound('sounds/start_game.mp3')
 
 def reset_game_if_needed():
     global blue_score
     global red_score
+    global blue_sensor_pin
+    global red_sensor_pin
     if blue_score == 10 or red_score == 10:
+        GPIO.remove_event_detect(blue_sensor_pin)
+        GPIO.remove_event_detect(red_sensor_pin)
         if (blue_score == 10 and red_score == 0) or (red_score == 10 and blue_score == 0):
            print('game over, crawl alarm!')
            play_sound('sounds/crawl_alarm.mp3')
@@ -70,8 +78,6 @@ def update_ui():
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(blue_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(red_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_sensor_callback, bouncetime=300)
-GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_sensor_callback, bouncetime=300)
 
 start_game()
 
