@@ -54,7 +54,7 @@ def update_score(team, score):
             play_sound('sounds/goal.mp3')
         blue_score = score
     elif team == 'red':
-        if (blue_score != score):
+        if (red_score != score):
             play_sound('sounds/goal.mp3')
         red_score = score
     print(team, 'team score:', score)
