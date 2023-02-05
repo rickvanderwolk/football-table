@@ -67,12 +67,17 @@ def red_sensor_callback(channel):
     update_score('red', red_score+1)
 
 def update_ui():
-    label = tk.Label(ui, text='Red: {}  Blue: {}'.format(red_score, blue_score), fg = 'white')
-    label.pack()
+    left_label = tk.Label(ui, text='{}'.format(red_score), fg='white', bg='red', font=('Arial', 248, 'bold'))
+    left_label.pack()
+    left_label.place(relx=0.25, rely=0.5, anchor='center')
+
+    right_label = tk.Label(ui, text='{}'.format(blue_score), fg='white', bg='blue', font=('Arial', 248, 'bold'))
+    right_label.pack()
+    right_label.place(relx=0.75, rely=0.5, anchor='center')
+
     while True:
-        label.config(font=('Arial', 172))
-        label.config(text='{} - {}'.format(red_score, blue_score))
-        label.place(relx=0.5, rely=0.5, anchor='center')
+        left_label.config(text='{}'.format(red_score))
+        right_label.config(text='{}'.format(blue_score))
         time.sleep(0.1)
 
 GPIO.setmode(GPIO.BCM)
