@@ -1,101 +1,87 @@
 import RPi.GPIO as GPIO
-import threading
+import subprocess
 import time
-import tkinter as tk
-import sys
-import pygame
 
-blue_sensor_pin = 24
-red_sensor_pin = 23
+# Stel de GPIO-pin mode in op BCM (Broadcom SOC channel)
+GPIO.setmode(GPIO.BCM)
 
-blue_score = 0
-red_score = 0
+# Stel de pins in die verbonden zijn met de beam break sensoren in als ingang
+sensor1_pin = 23
+sensor2_pin = 24
+GPIO.setup(sensor1_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(sensor2_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# Initialiseer de scores op 0
+score1 = 0
+score2 = 0
+
+# Bewaar de vorige waarden van de pinnen
+prev_input1 = 1
+prev_input2 = 1
+
+def update_screen():
+    global display_subprocess
+    if 'display_subprocess' in globals():
+        display_subprocess.kill()
+    arguments = [str(score1), str(score2)]
+    display_subprocess = subprocess.Popen(['python', 'ui.py', str(score1), str(score2)])
+
+def play_sound(sound):
+    global sound_subprocess
+    if 'sound_subprocess' in globals():
+      sound_subprocess.kill()
+    sound_subprocess = subprocess.Popen(['python', 'sound.py', sound])
 
 def start_game():
-    global blue_score
-    global red_score
-    global blue_sensor_pin
-    global red_sensor_pin
-    blue_score = 0
-    red_score = 0
-    GPIO.add_event_detect(blue_sensor_pin, GPIO.FALLING, callback=blue_sensor_callback, bouncetime=300)
-    GPIO.add_event_detect(red_sensor_pin, GPIO.FALLING, callback=red_sensor_callback, bouncetime=300)
+    global score1
+    global score2
+    score1 = 0
+    score2 = 0
+    update_screen()
     play_sound('sounds/start_game.mp3')
 
 def reset_game_if_needed():
-    global blue_score
-    global red_score
-    global blue_sensor_pin
-    global red_sensor_pin
-    if blue_score == 10 or red_score == 10:
-        GPIO.remove_event_detect(blue_sensor_pin)
-        GPIO.remove_event_detect(red_sensor_pin)
-        if (blue_score == 10 and red_score == 0) or (red_score == 10 and blue_score == 0):
-           print('game over, crawl alarm!')
+    global score1
+    global score2
+    # Reset game after one of the teams reaches a score of 10
+    if score1 == 10 or score2 == 10:
+        if (score1 == 10 and score2 == 0) or (score2 == 10 and score1 == 0):
            play_sound('sounds/crawl_alarm.mp3')
            time.sleep(60)
         else:
-           print('game over')
            play_sound('sounds/game_over.mp3')
            time.sleep(15)
         start_game()
 
-def play_sound(sound):
-    sound = str(sound)
-    pygame.mixer.init()
-    pygame.mixer.music.load(sound)
-    pygame.mixer.music.play()
-
-def update_score(team, score):
-    global blue_score
-    global red_score
-    if team == 'blue':
-        if (blue_score != score):
-            play_sound('sounds/goal.mp3')
-        blue_score = score
-    elif team == 'red':
-        if (red_score != score):
-            play_sound('sounds/goal.mp3')
-        red_score = score
-    print(team, 'team score:', score)
-    reset_game_if_needed()
-
-def blue_sensor_callback(channel):
-    update_score('blue', blue_score+1)
-
-def red_sensor_callback(channel):
-    update_score('red', red_score+1)
-
-def update_ui():
-    left_label = tk.Label(ui, text='{}'.format(red_score), fg='white', bg='red', font=('Arial', 248, 'bold'))
-    left_label.pack()
-    left_label.place(relx=0.25, rely=0.5, anchor='center')
-
-    right_label = tk.Label(ui, text='{}'.format(blue_score), fg='white', bg='blue', font=('Arial', 248, 'bold'))
-    right_label.pack()
-    right_label.place(relx=0.75, rely=0.5, anchor='center')
-
-    while True:
-        left_label.config(text='{}'.format(red_score))
-        right_label.config(text='{}'.format(blue_score))
-        time.sleep(0.1)
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(blue_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(red_sensor_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
+# Start game
 start_game()
 
-ui = tk.Tk()
-ui.attributes('-fullscreen', True)
-screen_width = ui.winfo_screenwidth()
-screen_height = ui.winfo_screenheight()
-frame_width = screen_width / 2
-ui.geometry(f'{screen_width}x{screen_height}+0+0')
-left_frame = tk.Frame(ui, bg = 'red', width=frame_width, height=screen_height)
-right_frame = tk.Frame(ui, bg = 'blue', width=frame_width, height=screen_height)
-left_frame.place(x=0, y=0, width = frame_width, height = screen_height)
-right_frame.place(x=frame_width, y=0, width = frame_width, height = screen_height)
-ui_thread = threading.Thread(target=update_ui)
-ui_thread.start()
-ui.mainloop()
+# Maak een infinite loop om de sensoren te lezen
+while True:
+     ## Lees de huidige waarden van de pinnen
+     input1 = GPIO.input(sensor1_pin)
+     input2 = GPIO.input(sensor2_pin)
+
+     # Als er een verandering is in de waarde van een van de pinnen
+     if ((not prev_input1 and input1) or (not prev_input2 and input2)):
+         # Als pin1 een verandering heeft, verhoog de score voor pin1
+         if (not prev_input1 and input1):
+             score1 += 1
+             print("Pin 1: Score opgehoogd naar {}".format(score1))
+             play_sound('sounds/goal.mp3')
+             update_screen()
+             reset_game_if_needed()
+         # Als pin2 een verandering heeft, verhoog de score voor pin2
+         if (not prev_input2 and input2):
+             score2 += 1
+             print("Pin 2: Score opgehoogd naar {}".format(score2))
+             play_sound('sounds/goal.mp3')
+             update_screen()
+             reset_game_if_needed()
+
+     # Bewaar de huidige waarden voor de volgende iteratie
+     prev_input1 = input1
+     prev_input2 = input2
+
+# Vergeet niet om de GPIO-pins op te ruimen als je het script stopt
+GPIO.cleanup()
