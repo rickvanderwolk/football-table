@@ -6,8 +6,6 @@
 
 `sudo shutdown -h now`
 
-***Sounds are currently missing in this repository, I will add them later.***
-
 ## Index
 
 - [Start game](#start-game)
